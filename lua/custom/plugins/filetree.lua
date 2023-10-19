@@ -10,7 +10,7 @@ return {
     'MunifTanjim/nui.nvim',
   },
   keys = {
-    { '<C-e>', '<cmd>Neotree toggle<cr>', desc = 'NeoTree' },
+    { '<leader>e', '<cmd>Neotree toggle<cr>', desc = 'NeoTree' },
   },
   config = function()
     require('neo-tree').setup {
@@ -19,6 +19,9 @@ return {
           visible = true, -- This is what you want: If you set this to `true`, all "hide" just mean "dimmed out"
           hide_dotfiles = false,
           hide_gitignored = true,
+        },
+        follow_current_file = {
+          enabled = true, -- This will find and focus the file in the active buffer every time
         },
       },
     }
