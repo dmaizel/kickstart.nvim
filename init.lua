@@ -235,12 +235,27 @@ require('lazy').setup({
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   { import = 'custom.plugins' },
 
-  "sitiom/nvim-numbertoggle"
+  'sitiom/nvim-numbertoggle',
+  {
+    'rmagatti/auto-session',
+    config = function()
+      require('auto-session').setup {
+        log_level = 'info',
+        auto_session_enable_last_session = false,
+        auto_session_root_dir = vim.fn.stdpath 'data' .. '/sessions/',
+        auto_session_enabled = true,
+        auto_save_enabled = true,
+        auto_restore_enabled = true,
+        auto_session_suppress_dirs = nil,
+      }
+    end,
+  },
 }, {})
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
+vim.o.scrolloff = 8
 
 -- Set highlight on search
 vim.o.hlsearch = false
@@ -472,7 +487,6 @@ require('which-key').register {
 require('mason').setup()
 require('mason-lspconfig').setup()
 
-
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 --
@@ -498,7 +512,7 @@ local servers = {
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
   yamlls = {
     yaml = {
-      schemas = vim.tbl_extend('error', { kubernetes = "*.yaml" }, require('schemastore').yaml.schemas()),
+      schemas = vim.tbl_extend('error', { kubernetes = '*.yaml' }, require('schemastore').yaml.schemas()),
       completion = true,
       validate = { enable = true },
       format = { enable = false },
@@ -507,7 +521,7 @@ local servers = {
         -- this plugin and its advanced options like `ignore`.
         enable = false,
         -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-        url = "",
+        url = '',
       },
     },
   },
@@ -536,6 +550,9 @@ mason_lspconfig.setup {
 mason_lspconfig.setup_handlers {
   function(server_name)
     require('lspconfig')[server_name].setup {
+      before_init = function(_, config)
+        config.settings.python.pythonPath = '/usr/local/bin/python3'
+      end,
       capabilities = capabilities,
       on_attach = on_attach,
       settings = servers[server_name],
@@ -605,8 +622,8 @@ cmp.setup {
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
-vim.filetype.add({
+vim.filetype.add {
   filename = {
-    ['launch.json'] = 'jsonc'
+    ['launch.json'] = 'jsonc',
   },
-})
+}

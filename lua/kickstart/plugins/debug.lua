@@ -34,6 +34,17 @@ return {
         'Joakker/lua-json5',
         build = "./install.sh"
       },
+      {
+        "mfussenegger/nvim-dap-python",
+        ft = "python",
+        dependencies = {
+          "mfussenegger/nvim-dap",
+        },
+        config = function(_, opts)
+          local path = vim.fn.stdpath('data') .. '/mason/packages/debugpy/venv/bin/python'
+          require('dap-python').setup(path)
+        end
+      },
       'Weissle/persistent-breakpoints.nvim'
     },
     config = function()
